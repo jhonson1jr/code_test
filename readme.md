@@ -94,7 +94,7 @@ GET: http://localhost:8000/api/funcionarios/listar
 
 GET: http://localhost:8000/api/funcionarios/detalhes/1
 
-http://localhost:8000/api/funcionarios/remover/1
+DELETE: http://localhost:8000/api/funcionarios/remover/1
 
 POST: http://localhost:8000/api/funcionarios/salvar
 
