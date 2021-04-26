@@ -1,65 +1,173 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## Laravel com CRUD completo e JwtToken
 
-## About Laravel
+## Necessários: Composer, MySQL, PostMan ou Insomnia, php 7
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+Tentativa de aproximação do padrão de projeto Adapter e OAuth 2.0 baseado na RFC 6749
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Instruções
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+Baixar o projeto;
 
-## Learning Laravel
+Executar dentro do prompt de comando dentro do diretório raiz do projeto:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+composer update
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+----- ----- ----- 
 
-## Laravel Sponsors
+Criar arquivo .env seguindo o .env.example, alterando os dados de conexao à base e de e-mail
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+DB_CONNECTION=mysql
+DB_HOST=<seu host>
+DB_PORT=3306
+DB_DATABASE=<sua database>
+DB_USERNAME=<seu usuário>
+DB_PASSWORD=<sua senha>
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
+MAIL_DRIVER=smtp
+MAIL_HOST={smtp do seu provedor>
+MAIL_PORT=<porta smtp do seu provedor>
+MAIL_USERNAME=<seu e-mail>
+MAIL_PASSWORD=<sua senha>
+MAIL_ENCRYPTION=<criptografia usada por seu provedor: padrão ssl>
+-> lembrando que a aplicação funciona caso não queira vincular algum provedor de e-mail
 
-## Contributing
+----- ----- ----- 
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+No prompt, caso seja preciso gerar chave para o projeto, executar:
+php artisan key:generate
 
-## Security Vulnerabilities
+----- ----- ----- 
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+No prompt, executar para montar a base:
 
-## License
+php artisan migrate:refresh --seed
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+----- ----- ----- 
+
+Criar chave do token jwt para controle de acesso:
+
+php artisan jwt:secret
+
+Usado jwt-auth para controle de tokens nas rotas ao invés do Passport (por maior facilidade de implementação):
+https://github.com/tymondesigns/jwt-auth
+
+
+----- ----- ----- 
+
+
+## Rotas e exemplos de consumo
+
+-> Funcionarios
+
+
+POST: http://localhost:8000/api/funcionarios/login
+Enviar json:
+{
+  "email" : "funcionario1@teste.com",
+  "password" : "teste123"
+}
+
+=> O login retorna o token de acesso para as demais rotas de escrita (POST, PUT, DELETE), 
+exceto funcionarios/salvar, para operar as rotas restritas, vincule o token obtido na opção Bearer -> Token 
+
+GET: http://localhost:8000/api/funcionarios/listar
+
+GET: http://localhost:8000/api/funcionarios/detalhes/1
+
+http://localhost:8000/api/funcionarios/remover/1
+
+POST: http://localhost:8000/api/funcionarios/salvar
+Enviar json:
+{
+  "id_loja": "2",
+  "nome_funcionario": "Func teste 1",
+  "email": "functeste1@teste.com"
+}
+
+PUT: http://localhost:8000/api/funcionarios/atualizar/1
+Enviar json:
+{
+  "id": 3,
+  "nome_funcionario": "Func teste 2",
+  "email": "functeste2@teste.com",
+  "id_loja": "2"
+}
+
+
+-> Lojas
+
+
+GET: http://localhost:8000/api/lojas/listar
+
+GET: http://localhost:8000/api/lojas/detalhes/1
+
+
+-> Produtos
+
+
+GET: http://localhost:8000/api/produtos/listar
+
+GET: http://localhost:8000/api/produtos/detalhes/1
+
+http://localhost:8000/api/produtos/remover/1
+
+POST: http://localhost:8000/api/produtos/salvar
+Enviar json:
+{
+  "codigo": "1000005",
+  "nome_produto": "Produto 5",
+  "descricao": "Detalhe prod 5",
+  "qtde_estoque": "30",
+  "preco": "100",
+  "peso": "10",
+  "dimensao": "1x2x3",
+  "tipo": "refrigerado",
+  "id_loja": "2"
+}
+
+PUT: http://localhost:8000/api/produtos/atualizar/1
+Enviar json:
+{
+  "id": 1,
+  "codigo": "123",
+  "nome_produto": "Produto 5",
+  "descricao": "Detalhe prod 5",
+  "qtde_estoque": "30",
+  "preco": "100",
+  "peso": "10",
+  "dimensao": "1x2x3",
+  "tipo": "refrigerado",
+  "id_loja": "1"
+}
+
+
+-> Pedidos
+
+GET: http://localhost:8000/api/pedidos/maisvendidos/1
+
+GET: http://localhost:8000/api/pedidos/estoquebaixo/1
+
+GET: http://localhost:8000/api/pedidos/ticketmedio/1
+
+POST: http://localhost:8000/api/pedidos/salvar
+Enviar json:
+{
+  "nome_cliente": "Cliente Post",
+  "valor_frete": 50,
+  "id_loja": 2,
+  "produtos": [
+    {
+      "quantidade": 1,
+      "id_produto": 4
+    },
+    {
+      "quantidade": 1,
+      "id_produto": 3
+    }
+  ]
+}
+
+## Relação disponíveis de produtos e lojas:
+Produtos 1 e 2 -> loja 1
+Produtos 3 e 4 -> loja 2
