@@ -10,13 +10,14 @@ Tentativa de aproximação do padrão de projeto Adapter e OAuth 2.0 baseado na 
 Baixar o projeto;
 
 Executar dentro do prompt de comando dentro do diretório raiz do projeto:
-
+```
 composer update
-
+```
 ----- ----- ----- 
 
 Criar arquivo .env seguindo o .env.example, alterando os dados de conexao à base e de e-mail
 
+```php
 DB_CONNECTION=mysql
 DB_HOST=<seu host>
 DB_PORT=3306
@@ -24,31 +25,40 @@ DB_DATABASE=<sua database>
 DB_USERNAME=<seu usuário>
 DB_PASSWORD=<sua senha>
 
+
 MAIL_DRIVER=smtp
 MAIL_HOST={smtp do seu provedor>
 MAIL_PORT=<porta smtp do seu provedor>
 MAIL_USERNAME=<seu e-mail>
 MAIL_PASSWORD=<sua senha>
 MAIL_ENCRYPTION=<criptografia usada por seu provedor: padrão ssl>
+```
 -> lembrando que a aplicação funciona caso não queira vincular algum provedor de e-mail
 
 ----- ----- ----- 
 
 No prompt, caso seja preciso gerar chave para o projeto, executar:
+
+```
 php artisan key:generate
 
+```
 ----- ----- ----- 
 
 No prompt, executar para montar a base:
 
+```
 php artisan migrate:refresh --seed
 
+```
 ----- ----- ----- 
 
 Criar chave do token jwt para controle de acesso:
 
+```
 php artisan jwt:secret
 
+```
 Usado jwt-auth para controle de tokens nas rotas ao invés do Passport (por maior facilidade de implementação):
 https://github.com/tymondesigns/jwt-auth
 
