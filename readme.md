@@ -15,7 +15,7 @@ composer update
 ```
 ----- ----- ----- 
 
-Criar arquivo .env seguindo o .env.example, alterando os dados de conexao à base e de e-mail
+Criar uma base de dados no MySQL e criar um arquivo .env seguindo o .env.example, alterando os dados de conexao à base e de e-mail
 
 ```php
 DB_CONNECTION=mysql
@@ -53,7 +53,7 @@ php artisan migrate:refresh --seed
 ```
 ----- ----- ----- 
 
-Criar chave do token jwt para controle de acesso:
+Criar chave do token jwt para controle de acesso (digite "yes" caso apareça alguma validação):
 
 ```
 php artisan jwt:secret
@@ -65,19 +65,28 @@ https://github.com/tymondesigns/jwt-auth
 
 ----- ----- ----- 
 
+Execute o projeto:
 
+```
+php artisan serve
+
+```
+----- ----- ----- 
 ## Rotas e exemplos de consumo
 
 -> Funcionarios
 
+Para obtenção de um token de acesso faça login com os dados abaixo:
 
 POST: http://localhost:8000/api/funcionarios/login
+
 Enviar json:
+```
 {
   "email" : "funcionario1@teste.com",
   "password" : "teste123"
 }
-
+```
 => O login retorna o token de acesso para as demais rotas de escrita (POST, PUT, DELETE), 
 exceto funcionarios/salvar, para operar as rotas restritas, vincule o token obtido na opção Bearer -> Token 
 
@@ -88,21 +97,27 @@ GET: http://localhost:8000/api/funcionarios/detalhes/1
 http://localhost:8000/api/funcionarios/remover/1
 
 POST: http://localhost:8000/api/funcionarios/salvar
+
 Enviar json:
+```
 {
   "id_loja": "2",
   "nome_funcionario": "Func teste 1",
   "email": "functeste1@teste.com"
 }
+```
 
 PUT: http://localhost:8000/api/funcionarios/atualizar/1
+
 Enviar json:
+```
 {
   "id": 3,
   "nome_funcionario": "Func teste 2",
   "email": "functeste2@teste.com",
   "id_loja": "2"
 }
+```
 
 
 -> Lojas
@@ -123,7 +138,9 @@ GET: http://localhost:8000/api/produtos/detalhes/1
 http://localhost:8000/api/produtos/remover/1
 
 POST: http://localhost:8000/api/produtos/salvar
+
 Enviar json:
+```
 {
   "codigo": "1000005",
   "nome_produto": "Produto 5",
@@ -135,9 +152,12 @@ Enviar json:
   "tipo": "refrigerado",
   "id_loja": "2"
 }
+```
 
 PUT: http://localhost:8000/api/produtos/atualizar/1
+
 Enviar json:
+```
 {
   "id": 1,
   "codigo": "123",
@@ -150,6 +170,7 @@ Enviar json:
   "tipo": "refrigerado",
   "id_loja": "1"
 }
+```
 
 
 -> Pedidos
@@ -161,7 +182,9 @@ GET: http://localhost:8000/api/pedidos/estoquebaixo/1
 GET: http://localhost:8000/api/pedidos/ticketmedio/1
 
 POST: http://localhost:8000/api/pedidos/salvar
+
 Enviar json:
+```
 {
   "nome_cliente": "Cliente Post",
   "valor_frete": 50,
@@ -177,7 +200,9 @@ Enviar json:
     }
   ]
 }
+```
 
 ## Relação disponíveis de produtos e lojas:
 Produtos 1 e 2 -> loja 1
+
 Produtos 3 e 4 -> loja 2
