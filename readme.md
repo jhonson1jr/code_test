@@ -135,7 +135,7 @@ GET: http://localhost:8000/api/produtos/listar
 
 GET: http://localhost:8000/api/produtos/detalhes/1
 
-http://localhost:8000/api/produtos/remover/1
+DELETE: http://localhost:8000/api/produtos/remover/1
 
 POST: http://localhost:8000/api/produtos/salvar
 
