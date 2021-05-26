@@ -1,5 +1,5 @@
 
-## Laravel com CRUD completo e JwtToken
+## APIs Laravel com CRUD completo e JwtToken
 
 ## Necessários: Composer, MySQL, PostMan ou Insomnia, php 7
 
